@@ -29,7 +29,7 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-950 to-blue-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -100,7 +100,7 @@ export function Login() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-gray-400"
+              className="text-white/80"
             >
               Premium Management System
             </motion.p>
@@ -118,14 +118,14 @@ export function Login() {
                   <input
                     type="email"
                     placeholder="Email address"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/80 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
                   />
                 </div>
                 <div>
                   <input
                     type="password"
                     placeholder="Password"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/80 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
                   />
                 </div>
               </div>
@@ -149,9 +149,7 @@ export function Login() {
                 />
               </motion.button>
 
-              <p className="text-center text-gray-500 text-sm mt-4">
-                Demo: Click to continue
-              </p>
+
             </motion.div>
           ) : (
             <motion.div
@@ -177,7 +175,7 @@ export function Login() {
 
               {/* Progress bar */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm text-gray-400">
+                <div className="flex justify-between text-sm text-white/80">
                   <span>Loading...</span>
                   <span>{progress}%</span>
                 </div>

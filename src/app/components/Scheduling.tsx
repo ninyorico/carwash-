@@ -76,33 +76,33 @@ function BookingCard({ booking, column, onClick, isNew }: any) {
       exit={{ opacity: 0, y: -20 }}
       whileHover={{ scale: 1.02, y: -4 }}
       onClick={onClick}
-      className={`backdrop-blur-xl bg-white/5 border rounded-xl p-4 cursor-pointer hover:border-white/20 transition-all ${
+      className={`backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[24px] shadow-xl shadow-black/10 p-4 cursor-pointer hover:border-white/20 transition-all ${
         isNew ? 'border-blue-500/50 shadow-lg shadow-blue-500/20' : 'border-white/10'
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
           <h4 className="text-white font-medium mb-1">{booking.customer}</h4>
-          <p className="text-sm text-gray-400">{booking.service}</p>
+          <p className="text-sm text-white/60">{booking.service}</p>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <div className={`px-2 py-1 rounded-lg bg-black/40 border ${column.color.replace('text-', 'border-')} ${column.color} text-xs font-medium`}>
+          <div className={`px-2 py-1 rounded-2xl bg-white/5 backdrop-blur-xl border ${column.color.replace('text-', 'border-')} ${column.color} text-xs font-medium`}>
             ₱{booking.price}
           </div>
           {booking.isPaused && (
-            <div className="px-2 py-1 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 text-xs font-medium">
+            <div className="px-2 py-1 rounded-2xl bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 text-xs font-medium">
               ⏸ Paused
             </div>
           )}
         </div>
       </div>
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-sm text-gray-400"><Car className="w-4 h-4" /><span>{booking.vehicle}</span></div>
-        <div className="flex items-center gap-2 text-sm text-gray-400"><Clock className="w-4 h-4" /><span>{booking.time}</span></div>
-        <div className="flex items-center gap-2 text-sm text-gray-400"><User className="w-4 h-4" /><span>{booking.employee}</span></div>
+        <div className="flex items-center gap-2 text-sm text-white/60"><Car className="w-4 h-4" /><span>{booking.vehicle}</span></div>
+        <div className="flex items-center gap-2 text-sm text-white/60"><Clock className="w-4 h-4" /><span>{booking.time}</span></div>
+        <div className="flex items-center gap-2 text-sm text-white/60"><User className="w-4 h-4" /><span>{booking.employee}</span></div>
       </div>
       <div className="mt-3 pt-3 border-t border-white/10">
-        <span className="text-xs text-gray-500">#{booking.id}</span>
+        <span className="text-xs text-white/50">#{booking.id}</span>
       </div>
     </motion.div>
   );
@@ -110,15 +110,15 @@ function BookingCard({ booking, column, onClick, isNew }: any) {
 
 function KanbanColumn({ column, bookings, onCardClick, newTicketIds }: any) {
   return (
-    <div className="flex-1 min-w-[280px] backdrop-blur-xl bg-white/5 border rounded-2xl p-4 transition-all border-white/10">
+    <div className="flex-1 min-w-[280px] backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] p-5 shadow-xl shadow-black/10 transition-all">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className={`p-2 rounded-lg bg-gradient-to-r ${column.gradient} bg-opacity-10`}>
+          <div className={`p-2 rounded-2xl bg-gradient-to-r ${column.gradient} bg-opacity-10`}>
             <div className={column.color}>{column.icon}</div>
           </div>
           <div>
             <h3 className="text-white font-semibold">{column.title}</h3>
-            <p className="text-sm text-gray-500">{bookings.length} items</p>
+            <p className="text-sm text-white/50">{bookings.length} items</p>
           </div>
         </div>
       </div>
@@ -428,7 +428,7 @@ const handleCompleteService = () => {
       case 'in-progress': return { color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', label: 'In Progress', icon: Timer };
       case 'completed': return { color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', label: 'Completed', icon: CheckCircle };
       case 'cancelled': return { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', label: 'Cancelled', icon: XCircle };
-      default: return { color: 'text-gray-400', bg: 'bg-gray-500/10', border: 'border-gray-500/30', label: 'Unknown', icon: Clock };
+      default: return { color: 'text-white/60', bg: 'bg-gray-500/10', border: 'border-gray-500/30', label: 'Unknown', icon: Clock };
     }
   };
 
@@ -446,11 +446,11 @@ const handleCompleteService = () => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Scheduling</h1>
-          <p className="text-gray-400">Manage and track service appointments</p>
+          <p className="text-white/80">Manage and track service appointments</p>
         </div>
         <button 
           onClick={() => setShowNewBookingModal(true)} 
-          className="px-6 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl text-white font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-2"
+          className="px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl text-white font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-2"
         >
           <Plus className="w-5 h-5" /> New Booking
         </button>
@@ -458,37 +458,37 @@ const handleCompleteService = () => {
 
       {/* Stats Cards - FIXED with solid colors, NO gradients */}
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+        <div className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-5 shadow-xl shadow-black/10 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Pending</p>
+              <p className="text-white/80 text-sm mb-1">Pending</p>
               <p className="text-3xl font-bold text-white">{stats.pending}</p>
             </div>
             <Clock className="w-8 h-8 text-yellow-400" />
           </div>
         </div>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+        <div className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-5 shadow-xl shadow-black/10 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">In Progress</p>
+              <p className="text-white/80 text-sm mb-1">In Progress</p>
               <p className="text-3xl font-bold text-white">{stats.inProgress}</p>
             </div>
             <Timer className="w-8 h-8 text-purple-400" />
           </div>
         </div>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+        <div className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-5 shadow-xl shadow-black/10 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Completed</p>
+              <p className="text-white/80 text-sm mb-1">Completed</p>
               <p className="text-3xl font-bold text-white">{stats.completed}</p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-400" />
           </div>
         </div>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+        <div className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-5 shadow-xl shadow-black/10 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Cancelled</p>
+              <p className="text-white/80 text-sm mb-1">Cancelled</p>
               <p className="text-3xl font-bold text-white">{stats.cancelled}</p>
             </div>
             <XCircle className="w-8 h-8 text-red-400" />
@@ -524,7 +524,7 @@ const handleCompleteService = () => {
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: 'spring', duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-auto"
+              className="w-full max-w-2xl backdrop-blur-xl bg-white/10 border border-white/20 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-auto"
             >
               <div className="flex items-start justify-between mb-6 pb-6 border-b border-white/10">
                 <div className="flex items-center gap-4">
@@ -533,32 +533,32 @@ const handleCompleteService = () => {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-white mb-1">Service Details</h3>
-                    <p className="text-sm text-gray-400">Ticket #{selectedBooking.id}</p>
+                    <p className="text-sm text-white/60">Ticket #{selectedBooking.id}</p>
                   </div>
                 </div>
-                <button onClick={() => setShowDetailModal(false)} className="text-gray-400 hover:text-white">
+                <button onClick={() => setShowDetailModal(false)} className="text-white/60 hover:text-white">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <h4 className="text-sm font-semibold text-gray-400 mb-3">Customer Information</h4>
+                <h4 className="text-sm font-semibold text-white/60 mb-3">Customer Information</h4>
                 <div className="grid grid-cols-2 gap-4">
-                  <div><p className="text-xs text-gray-500">Name</p><p className="text-white">{selectedBooking.customer}</p></div>
-                  <div><p className="text-xs text-gray-500">Vehicle</p><p className="text-white">{selectedBooking.vehicle}</p></div>
-                  <div><p className="text-xs text-gray-500">Scheduled Time</p><p className="text-white">{selectedBooking.time}</p></div>
+                  <div><p className="text-xs text-white/50">Name</p><p className="text-white">{selectedBooking.customer}</p></div>
+                  <div><p className="text-xs text-white/50">Vehicle</p><p className="text-white">{selectedBooking.vehicle}</p></div>
+                  <div><p className="text-xs text-white/50">Scheduled Time</p><p className="text-white">{selectedBooking.time}</p></div>
                 </div>
               </div>
 
               {/* Service Status - Display only */}
               <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <h4 className="text-sm font-semibold text-gray-400 mb-3">Service Status</h4>
+                <h4 className="text-sm font-semibold text-white/60 mb-3">Service Status</h4>
                 <div className="flex items-center gap-3">
                   {(() => {
                     const statusConfig = getStatusDisplay(selectedBooking.status, selectedBooking.isPaused || false);
                     const StatusIcon = statusConfig.icon;
                     return (
-                      <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg ${statusConfig.bg} border ${statusConfig.border}`}>
+                      <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl ${statusConfig.bg} border ${statusConfig.border}`}>
                         <StatusIcon className={`w-4 h-4 ${statusConfig.color}`} />
                         <span className={`text-sm font-medium ${statusConfig.color}`}>{statusConfig.label}</span>
                       </div>
@@ -569,7 +569,7 @@ const handleCompleteService = () => {
 
               {/* Actions */}
               <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <h4 className="text-sm font-semibold text-gray-400 mb-3">Actions</h4>
+                <h4 className="text-sm font-semibold text-white/60 mb-3">Actions</h4>
                 <div className="grid grid-cols-4 gap-2">
                   <button
                     onClick={handleStartService}
@@ -618,7 +618,7 @@ const handleCompleteService = () => {
                 {(selectedBooking.status === 'in-progress' || elapsedTime > 0) && (
                   <div className="mt-4 p-3 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/30 rounded-xl">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">Elapsed Time</span>
+                      <span className="text-sm text-white/60">Elapsed Time</span>
                       <span className="text-2xl font-mono font-bold text-white">
                         {formatElapsedTime(elapsedTime)}
                       </span>
@@ -628,26 +628,26 @@ const handleCompleteService = () => {
               </div>
 
               <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <h4 className="text-sm font-semibold text-gray-400 mb-3">Service Details</h4>
+                <h4 className="text-sm font-semibold text-white/60 mb-3">Service Details</h4>
                 <div className="space-y-3">
-                  <div className="flex justify-between p-3 bg-white/5 rounded-lg">
-                    <span className="text-gray-400">Service</span>
+                  <div className="flex justify-between p-3 bg-white/5 rounded-2xl">
+                    <span className="text-white/60">Service</span>
                     <span className="text-white font-medium">{selectedBooking.service}</span>
                   </div>
-                  <div className="flex justify-between p-3 bg-white/5 rounded-lg">
-                    <span className="text-gray-400">Price</span>
+                  <div className="flex justify-between p-3 bg-white/5 rounded-2xl">
+                    <span className="text-white/60">Price</span>
                     <span className="text-xl font-bold text-white">₱{selectedBooking.price}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Assigned To</span>
+                    <span className="text-white/60">Assigned To</span>
                     <span className="text-white font-medium flex items-center gap-2">
                       <User className="w-4 h-4" /> {selectedBooking.employee}
                     </span>
                   </div>
                   {selectedBooking.paymentStatus && (
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Payment Status</span>
-                      <div className={`px-3 py-1 rounded-lg text-xs font-medium ${
+                      <span className="text-white/60">Payment Status</span>
+                      <div className={`px-3 py-1 rounded-2xl text-xs font-medium ${
                         selectedBooking.paymentStatus === 'paid' 
                           ? 'bg-green-500/10 text-green-400 border border-green-500/30' 
                           : selectedBooking.paymentStatus === 'pending'
@@ -685,7 +685,7 @@ const handleCompleteService = () => {
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
         transition={{ type: 'spring', duration: 0.5 }}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8 shadow-2xl"
+        className="w-full max-w-md backdrop-blur-xl bg-slate-800/70 border border-white/20 rounded-3xl p-8 shadow-2xl"
       >
         <div className="flex items-start justify-between mb-6 pb-6 border-b border-white/10">
           <div className="flex items-center gap-4">
@@ -694,10 +694,10 @@ const handleCompleteService = () => {
             </div>
             <div>
               <h3 className="text-2xl font-bold text-white mb-1">New Booking</h3>
-              <p className="text-sm text-gray-400">Create a new service appointment</p>
+              <p className="text-sm text-white/60">Create a new service appointment</p>
             </div>
           </div>
-          <button onClick={() => setShowNewBookingModal(false)} className="text-gray-400 hover:text-white">
+          <button onClick={() => setShowNewBookingModal(false)} className="text-white/60 hover:text-white">
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -705,7 +705,7 @@ const handleCompleteService = () => {
         <div className="space-y-4">
           {/* Customer Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Customer Name</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Customer Name</label>
             <input
               type="text"
               value={newBookingForm.customerName}
@@ -717,7 +717,7 @@ const handleCompleteService = () => {
 
           {/* Phone Number */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Phone Number</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Phone Number</label>
             <input
               type="tel"
               value={newBookingForm.customerPhone}
@@ -729,7 +729,7 @@ const handleCompleteService = () => {
 
           {/* Service - FIXED dropdown visibility */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Service</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Service</label>
             <select
               value={newBookingForm.service}
               onChange={(e) => setNewBookingForm(prev => ({ ...prev, service: e.target.value }))}
@@ -747,7 +747,7 @@ const handleCompleteService = () => {
 
           {/* Vehicle Type - FIXED dropdown visibility */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Vehicle Type</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Vehicle Type</label>
             <select
               value={newBookingForm.vehicleType}
               onChange={(e) => setNewBookingForm(prev => ({ ...prev, vehicleType: e.target.value }))}
@@ -765,7 +765,7 @@ const handleCompleteService = () => {
 
           {/* Scheduled Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Scheduled Time</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Scheduled Time</label>
             <input
               type="datetime-local"
               value={newBookingForm.scheduledTime}
@@ -776,7 +776,7 @@ const handleCompleteService = () => {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Notes (Optional)</label>
+            <label className="block text-sm font-medium text-white/60 mb-2">Notes (Optional)</label>
             <textarea
               value={newBookingForm.notes}
               onChange={(e) => setNewBookingForm(prev => ({ ...prev, notes: e.target.value }))}
@@ -790,7 +790,7 @@ const handleCompleteService = () => {
         <div className="flex gap-3 mt-6">
           <button
             onClick={() => setShowNewBookingModal(false)}
-            className="flex-1 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-semibold hover:bg-white/10 transition-all"
+            className="flex-1 py-3 bg-white/10 border border-white/10 rounded-2xl text-white font-semibold hover:bg-white/10 transition-all"
           >
             Cancel
           </button>

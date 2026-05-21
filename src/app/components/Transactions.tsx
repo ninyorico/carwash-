@@ -395,7 +395,7 @@ export function Transactions() {
     return (
       <div className="p-8 text-center">
         <div className="text-white text-xl mb-4">No transactions yet</div>
-        <p className="text-gray-400">Go to POS and complete a payment to see transactions here</p>
+        <p className="text-white/80">Go to POS and complete a payment to see transactions here</p>
       </div>
     );
   }
@@ -406,16 +406,13 @@ export function Transactions() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Transactions</h1>
-          <p className="text-gray-400">View and manage all transactions</p>
+          <p className="text-white/80">View and manage all transactions</p>
         </div>
-        <button onClick={fetchTransactions} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all flex items-center gap-2">
-          <Download className="w-4 h-4" /> Refresh
-        </button>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex items-center gap-2 text-gray-400">
+        <div className="flex items-center gap-2 text-white/80">
           <Filter className="w-4 h-4" />
           <span className="text-sm">Filter:</span>
         </div>
@@ -426,8 +423,8 @@ export function Transactions() {
               onClick={() => setFilter(f as any)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 filter === f
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                  : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                  ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/15 border border-white/20 rounded-2xl shadow-lg shadow-black/5 text-white/80 hover:text-white hover:bg-white/10'
               }`}
             >
               {f === 'all' ? 'All Time' : f === 'today' ? 'Today' : f === 'week' ? 'This Week' : 'This Month'}
@@ -452,7 +449,7 @@ export function Transactions() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all"
+              className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 overflow-hidden hover:border-white/20 transition-all"
             >
               {/* Collapsed View */}
               <div
@@ -465,31 +462,31 @@ export function Transactions() {
 
                 <div className="flex-1 grid grid-cols-5 gap-4">
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Transaction ID</p>
+                    <p className="text-xs text-white/80 mb-1">Transaction ID</p>
                     <p className="text-white font-mono text-sm font-medium">{txn.id}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Customer</p>
+                    <p className="text-xs text-white/80 mb-1">Customer</p>
                     <p className="text-white font-medium">{txn.customerName}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Date & Time</p>
+                    <p className="text-xs text-white/80 mb-1">Date & Time</p>
                     <p className="text-white text-sm">{formatDate(txn.date)}</p>
-                    <p className="text-gray-500 text-xs">{formatTime(txn.date)}</p>
+                    <p className="text-white/80 text-xs">{formatTime(txn.date)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Services</p>
+                    <p className="text-xs text-white/80 mb-1">Services</p>
                     {/* Collapsed: Show only count */}
                     <p className="text-white text-sm">{txn.services?.length || 0} item(s)</p>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">Total Amount</p>
+                      <p className="text-xs text-white/80 mb-1">Total Amount</p>
                       <p className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                         ₱{txn.totalAmount?.toFixed(2) || '0.00'}
                       </p>
                     </div>
-                    <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-white/80 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                   </div>
                 </div>
               </div>
@@ -504,18 +501,18 @@ export function Transactions() {
                     transition={{ duration: 0.3 }}
                     className="border-t border-white/10 overflow-hidden"
                   >
-                    <div className="p-6 bg-white/5">
+                    <div className="p-6 bg-white/10">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Payment Method */}
                         <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
                           <CreditCard className="w-5 h-5 text-blue-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Payment Method</p>
+                            <p className="text-xs text-white/80 mb-1">Payment Method</p>
                             <p className="text-white font-medium capitalize">
                               {txn.paymentMethod === 'card' ? 'Credit/Debit Card' : txn.paymentMethod === 'ewallet' ? 'E-Wallet' : 'Cash'}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-500">Status:</span>
+                              <span className="text-xs text-white/80">Status:</span>
                               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${paymentStatusConfig.bg} ${paymentStatusConfig.color}`}>
                                 {paymentStatusConfig.label}
                               </span>
@@ -527,7 +524,7 @@ export function Transactions() {
                         <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
                           <Car className="w-5 h-5 text-purple-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Vehicle Type</p>
+                            <p className="text-xs text-white/80 mb-1">Vehicle Type</p>
                             <p className="text-white font-medium">{vehicleType}</p>
                           </div>
                         </div>
@@ -536,7 +533,7 @@ export function Transactions() {
                         <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
                           <Clock className="w-5 h-5 text-pink-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Duration</p>
+                            <p className="text-xs text-white/80 mb-1">Duration</p>
                             <p className="text-white font-medium">{duration}</p>
                           </div>
                         </div>
@@ -545,7 +542,7 @@ export function Transactions() {
                         <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
                           <User className="w-5 h-5 text-cyan-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Served By</p>
+                            <p className="text-xs text-white/80 mb-1">Served By</p>
                             <p className="text-white font-medium">{txn.servedBy || 'N/A'}</p>
                           </div>
                         </div>
@@ -554,13 +551,13 @@ export function Transactions() {
                       {/* Expanded: Show full service list */}
                       {txn.services && txn.services.length > 0 && (
                         <div className="mt-6">
-                          <h4 className="text-sm font-semibold text-gray-400 mb-3">Services Availed</h4>
+                          <h4 className="text-sm font-semibold text-white/80 mb-3">Services Availed</h4>
                           <div className="space-y-2">
                             {txn.services.map((service: any, idx: number) => (
                               <div key={idx} className="flex items-center justify-between py-2 border-b border-white/10 last:border-0">
                                 <div className="flex-1">
                                   <p className="text-white font-medium">{service.serviceName}</p>
-                                  <p className="text-xs text-gray-500">Vehicle: {service.vehicleType || 'N/A'} | Qty: {service.quantity}</p>
+                                  <p className="text-xs text-white/80">Vehicle: {service.vehicleType || 'N/A'} | Qty: {service.quantity}</p>
                                 </div>
                                 <p className="text-white font-semibold">₱{(service.price * service.quantity).toFixed(2)}</p>
                               </div>

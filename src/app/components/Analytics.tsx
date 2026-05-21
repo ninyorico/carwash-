@@ -1,3 +1,6 @@
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import {
@@ -52,10 +55,10 @@ const PesoSign = ({ className }: { className?: string }) => (
 const CustomTooltip = ({ active, payload, label, currency = false }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-lg">
-        <p className="text-gray-600 text-sm font-medium mb-1">{label}</p>
+      <div className="bg-slate-900/90 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-2xl">
+        <p className="text-white/70 text-sm font-medium mb-1">{label}</p>
         {payload.map((p: any, idx: number) => (
-          <p key={idx} className="text-gray-800 text-sm">
+          <p key={idx} className="text-white text-sm">
             <span style={{ color: p.color }} className="font-medium">
               {p.name}:
             </span>{' '}
@@ -166,25 +169,98 @@ export function Analytics() {
     return (
       <div className="p-8 text-center">
         <div className="text-white text-xl mb-4">No transaction data yet</div>
-        <p className="text-gray-400">Complete some transactions in POS to see analytics</p>
+        <p className="text-white/70">Complete some transactions in POS to see analytics</p>
       </div>
     );
   }
 
+const handleGenerateReport = () => {
+  // Create workbook
+  const workbook = XLSX.utils.book_new();
+
+  // Revenue Sheet
+  const revenueSheet = XLSX.utils.json_to_sheet(
+    revenueChartData.map((item: any) => ({
+      Date: item.date,
+      Revenue: item.revenue,
+      Profit: item.profit,
+      Expenses: item.expenses,
+    }))
+  );
+
+  // Service Distribution Sheet
+  const serviceSheet = XLSX.utils.json_to_sheet(
+    serviceDist.map((item: any) => ({
+      Service: item.serviceName,
+      Count: item.count,
+    }))
+  );
+
+  // Payment Methods Sheet
+  const paymentSheet = XLSX.utils.json_to_sheet(
+    paymentMethods.map((item: any) => ({
+      Method: item.name,
+      Transactions: item.value,
+      Revenue: item.revenue,
+    }))
+  );
+
+  // Top Services Sheet
+  const topServicesSheet = XLSX.utils.json_to_sheet(
+    topServices.map((item: any) => ({
+      Service: item.serviceName,
+      Bookings: item.bookings,
+      Revenue: item.revenue,
+    }))
+  );
+
+  // Dashboard Summary Sheet
+  const summarySheet = XLSX.utils.json_to_sheet([
+    {
+      TotalRevenue: totalRevenue,
+      TotalBookings: totalBookings,
+      ActiveServices: activeServices,
+      CompletedToday: completedToday,
+    },
+  ]);
+
+  // Append sheets
+  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+  XLSX.utils.book_append_sheet(workbook, revenueSheet, 'Revenue');
+  XLSX.utils.book_append_sheet(workbook, serviceSheet, 'Services');
+  XLSX.utils.book_append_sheet(workbook, paymentSheet, 'Payments');
+  XLSX.utils.book_append_sheet(workbook, topServicesSheet, 'Top Services');
+
+  // Write workbook
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: 'xlsx',
+    type: 'array',
+  });
+
+  // Save file
+  const fileData = new Blob([excelBuffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+  });
+
+  saveAs(
+    fileData,
+    `Analytics_Report_${dateRange}_Days.xlsx`
+  );
+};
+  
   return (
     <div className="p-8 space-y-6">
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Analytics</h1>
-          <p className="text-gray-400">Real business insights from transaction data</p>
+          <p className="text-white/80">Real business insights from transaction data</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
             <select 
               value={dateRange}
               onChange={(e) => handleDateRangeChange(e.target.value)}
-              className="px-4 py-2 bg-slate-800 border border-white/20 rounded-xl text-white focus:outline-none focus:border-blue-500/50 cursor-pointer appearance-none pr-10"
-              style={{ backgroundColor: '#1e293b' }}
+              className="px-4 py-2 bg-white/10 border border-white/20 rounded-2xl backdrop-blur-xl text-white focus:outline-none focus:border-blue-500/50 cursor-pointer appearance-none pr-10"
             >
               <option value="7" className="bg-slate-800 text-white">Last 7 days</option>
               <option value="30" className="bg-slate-800 text-white">Last 30 days</option>
@@ -197,9 +273,15 @@ export function Analytics() {
               </svg>
             </div>
           </div>
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-2">
-            <Sparkles className="w-4 h-4" /><span>Generate Report</span>
-          </motion.button>
+<motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  onClick={handleGenerateReport}
+  className="px-6 py-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl text-white font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-2"
+>
+  <Sparkles className="w-4 h-4" />
+  <span>Generate Report</span>
+</motion.button>
         </div>
       </motion.div>
 
@@ -207,7 +289,7 @@ export function Analytics() {
         {dailyStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <motion.div key={stat.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.03, y: -4 }} className="relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 overflow-hidden group">
+            <motion.div key={stat.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.03, y: -4 }} className="relative backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-6 overflow-hidden group">
               <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 transition-opacity`} />
               <div className="relative flex items-start justify-between mb-4">
                 <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center`}>
@@ -215,7 +297,7 @@ export function Analytics() {
                 </div>
                 <div className="flex items-center gap-1"><ArrowUpRight className="w-4 h-4 text-green-400" /><span className="text-sm font-medium text-green-400">{stat.percentage}</span></div>
               </div>
-              <p className="relative text-sm text-gray-400 mb-1">{stat.label}</p>
+              <p className="relative text-sm text-white/70 mb-1">{stat.label}</p>
               <p className="relative text-3xl font-bold text-white">{stat.value}</p>
             </motion.div>
           );
@@ -224,14 +306,14 @@ export function Analytics() {
 
       {/* Revenue Trend Chart with Gradient */}
       {revenueChartData.length > 0 && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-xl font-semibold text-white mb-1">Revenue Trend</h3>
-              <p className="text-sm text-gray-400">{getDateRangeLabel(dateRange)} performance from actual transactions</p>
+              <p className="text-sm text-white/70">{getDateRangeLabel(dateRange)} performance from actual transactions</p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-500" /><span className="text-sm text-gray-400">Revenue</span></div>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-500" /><span className="text-sm text-white/70">Revenue</span></div>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -247,17 +329,17 @@ export function Analytics() {
                   <stop offset="100%" stopColor="#8b5cf6" stopOpacity={1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" opacity={0.2} />
               <XAxis 
                 dataKey="date" 
-                stroke="#9ca3af" 
+                stroke="#ffffff90" 
                 fontSize={12} 
                 angle={-45} 
                 textAnchor="end" 
                 height={70}
                 interval={dateRange === '7' ? 0 : Math.floor(revenueChartData.length / 10)}
               />
-              <YAxis stroke="#9ca3af" fontSize={12} />
+              <YAxis stroke="#ffffff90" fontSize={12} />
               <Tooltip content={<CustomTooltip currency={true} />} />
               <Area 
                 type="monotone" 
@@ -273,10 +355,10 @@ export function Analytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Service Distribution Bar Chart with Gradient */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="lg:col-span-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="lg:col-span-2 backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-6">
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-1">Service Distribution</h3>
-            <p className="text-sm text-gray-400">Breakdown by service type for {getDateRangeLabel(dateRange)}</p>
+            <p className="text-sm text-white/70">Breakdown by service type for {getDateRangeLabel(dateRange)}</p>
           </div>
           {serviceDist.length > 0 ? (
             <ResponsiveContainer width="100%" height={250}>
@@ -287,21 +369,21 @@ export function Analytics() {
                     <stop offset="100%" stopColor="#c084fc" stopOpacity={0.6} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
-                <XAxis dataKey="serviceName" stroke="#9ca3af" fontSize={11} angle={-45} textAnchor="end" height={80} />
-                <YAxis stroke="#9ca3af" fontSize={11} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" opacity={0.2} />
+                <XAxis dataKey="serviceName" stroke="#ffffff90" fontSize={11} angle={-45} textAnchor="end" height={80} />
+                <YAxis stroke="#ffffff90" fontSize={11} />
                 <Tooltip content={<CustomTooltip currency={false} />} />
                 <Bar dataKey="count" fill="url(#serviceBarGrad)" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          ) : (<div className="text-center text-gray-400 py-12">No service data available for this period</div>)}
+          ) : (<div className="text-center text-white/70 py-12">No service data available for this period</div>)}
         </motion.div>
 
         {/* Payment Methods Pie Chart with Gradients */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-6">
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-1">Payment Methods</h3>
-            <p className="text-sm text-gray-400">Distribution by payment type for {getDateRangeLabel(dateRange)}</p>
+            <p className="text-sm text-white/70">Distribution by payment type for {getDateRangeLabel(dateRange)}</p>
           </div>
           {paymentMethods.length > 0 ? (
             <>
@@ -327,7 +409,7 @@ export function Analytics() {
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   >
                     {paymentMethods.map((entry: any, index: number) => (
-                      <Cell key={`${entry.name}-${index}`} fill={`url(#pieGradient${index})`} stroke="#fff" strokeWidth={2} />
+                      <Cell key={`${entry.name}-${index}`} fill={`url(#pieGradient${index})`} stroke="#ffffff30" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip content={<CustomTooltip currency={false} />} />
@@ -338,32 +420,32 @@ export function Analytics() {
                   <div key={`${item.name}-${idx}`} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-sm text-gray-400">{item.name}</span>
+                      <span className="text-sm text-white/70">{item.name}</span>
                     </div>
                     <span className="text-sm font-medium text-white">₱{item.revenue?.toLocaleString() || 0}</span>
                   </div>
                 ))}
               </div>
             </>
-          ) : (<div className="text-center text-gray-400 py-12">No payment data available for this period</div>)}
+          ) : (<div className="text-center text-white/70 py-12">No payment data available for this period</div>)}
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Top Services */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-6">
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-1">Top Services</h3>
-            <p className="text-sm text-gray-400">Most popular by revenue for {getDateRangeLabel(dateRange)}</p>
+            <p className="text-sm text-white/70">Most popular by revenue for {getDateRangeLabel(dateRange)}</p>
           </div>
           <div className="space-y-4">
             {topServices.slice(0, 5).map((service: any, index: number) => (
-              <div key={`${service.serviceName}-${index}`} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl">
+              <div key={`${service.serviceName}-${index}`} className="flex items-center justify-between p-3 bg-white/10 hover:bg-white/15 border border-white/20 rounded-2xl backdrop-blur-xl transition-all">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 text-white text-sm font-bold">{index + 1}</div>
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 text-white text-sm font-bold">{index + 1}</div>
                   <div>
                     <p className="text-white font-medium text-sm">{service.serviceName}</p>
-                    <p className="text-xs text-gray-500">{service.bookings} bookings</p>
+                    <p className="text-xs text-white/70">{service.bookings} bookings</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -375,10 +457,10 @@ export function Analytics() {
         </motion.div>
 
         {/* Service Revenue Bar Chart with Gradient */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="lg:col-span-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="lg:col-span-2 backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-6">
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-1">Service Revenue</h3>
-            <p className="text-sm text-gray-400">Revenue by service type for {getDateRangeLabel(dateRange)}</p>
+            <p className="text-sm text-white/70">Revenue by service type for {getDateRangeLabel(dateRange)}</p>
           </div>
           {topServices.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
@@ -390,14 +472,14 @@ export function Analytics() {
                     <stop offset="100%" stopColor="#ec4899" stopOpacity={0.6} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
-                <XAxis type="number" stroke="#9ca3af" fontSize={11} />
-                <YAxis type="category" dataKey="serviceName" stroke="#9ca3af" fontSize={11} width={100} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" opacity={0.2} />
+                <XAxis type="number" stroke="#ffffff90" fontSize={11} />
+                <YAxis type="category" dataKey="serviceName" stroke="#ffffff90" fontSize={11} width={100} />
                 <Tooltip content={<CustomTooltip currency={true} />} />
                 <Bar dataKey="revenue" fill="url(#revenueBarGrad)" radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          ) : (<div className="text-center text-gray-400 py-12">No revenue data available for this period</div>)}
+          ) : (<div className="text-center text-white/70 py-12">No revenue data available for this period</div>)}
         </motion.div>
       </div>
     </div>

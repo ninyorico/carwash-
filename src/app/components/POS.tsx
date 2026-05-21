@@ -106,7 +106,7 @@ const vehicleTypes: VehicleType[] = [
 ];
 
 // Find the cheapest vehicle type (lowest priceMultiplier)
-const cheapestVehicle = vehicleTypes.reduce((prev, current) => 
+const cheapestVehicle = vehicleTypes.reduce((prev, current) =>
   (prev.priceMultiplier < current.priceMultiplier) ? prev : current
 );
 
@@ -251,8 +251,8 @@ export function POS() {
       if (existing) {
         return prev.map((item) =>
           item.id === selectedService.id &&
-          item.vehicleType.id === selectedVehicle.id &&
-          item.assignedStaff === selectedStaff
+            item.vehicleType.id === selectedVehicle.id &&
+            item.assignedStaff === selectedStaff
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -366,7 +366,7 @@ export function POS() {
     try {
       const res = await api.post('/transactions', payload);
       const data = res.data;
-      
+
       setCompletedTransaction({
         id: data.transaction.id,
         total: total,
@@ -375,7 +375,7 @@ export function POS() {
         amountReceived: amountReceived,
         changeAmount: changeAmount,
       });
-      
+
       setTransactionId(data.transaction.id);
       setCreatedTicketId(data.ticket.id);
       setPaymentStatus('success');
@@ -415,26 +415,26 @@ export function POS() {
       <div className="flex-1 overflow-auto p-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">Point of Sale</h1>
-          <p className="text-gray-400">Select services to add to cart</p>
+          <p className="text-white/80">Select services to add to cart</p>
         </div>
 
         {selectedCustomer && (
-          <div className="mb-6 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4">
+          <div className="mb-6 backdrop-blur-2xl bg-white/10 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
                   <User className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400 mb-1">Current Customer</p>
+                  <p className="text-sm text-white/80 mb-1">Current Customer</p>
                   <p className="text-white font-semibold text-lg">{selectedCustomer.name}</p>
                   <div className="flex items-center gap-4 mt-1">
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <span className="text-sm text-white/80 flex items-center gap-1">
                       <Phone className="w-3 h-3" />
                       {selectedCustomer.phone}
                     </span>
                     {selectedCustomer.plateNumber && (
-                      <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <span className="text-sm text-white/80 flex items-center gap-1">
                         <Car className="w-3 h-3" />
                         {selectedCustomer.plateNumber}
                       </span>
@@ -449,7 +449,7 @@ export function POS() {
               </div>
               <button
                 onClick={handleChangeCustomer}
-                className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2"
               >
                 <Edit2 className="w-4 h-4" />
                 <span>Change</span>
@@ -463,7 +463,7 @@ export function POS() {
             <div
               key={service.id}
               onClick={() => handleServiceClick(service)}
-              className="relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer group hover:bg-white/10 transition-all"
+              className="relative overflow-hidden backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-6 shadow-xl shadow-black/10 transition-all duration-300 cursor-pointer group"
             >
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity`}
@@ -477,10 +477,10 @@ export function POS() {
               </div>
               <div className="relative">
                 <h3 className="text-lg font-semibold text-white mb-1">{service.name}</h3>
-                <p className="text-sm text-gray-400 mb-4">{service.description}</p>
+                <p className="text-sm text-white/80 mb-4">{service.description}</p>
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-sm text-gray-500">Starting at</span>
+                    <span className="text-sm text-white/80">Starting at</span>
                     <span className="text-2xl font-bold text-white ml-2">₱{getBasePrice(service)}</span>
                   </div>
                   <div
@@ -496,7 +496,7 @@ export function POS() {
       </div>
 
       {/* Cart panel */}
-      <div className="w-96 border-l border-white/10 backdrop-blur-xl bg-white/5 flex flex-col">
+      <div className="w-96 border-l border-white/20 backdrop-blur-2xl bg-white/10 flex flex-col shadow-2xl shadow-black/10">
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
@@ -504,7 +504,7 @@ export function POS() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-white">Cart</h2>
-              <p className="text-sm text-gray-400">{cart.length} items</p>
+              <p className="text-sm text-white/80">{cart.length} items</p>
             </div>
           </div>
         </div>
@@ -513,9 +513,9 @@ export function POS() {
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                <ShoppingCart className="w-10 h-10 text-gray-500" />
+                <ShoppingCart className="w-10 h-10 text-white/80" />
               </div>
-              <p className="text-gray-400">Your cart is empty</p>
+              <p className="text-white/80">Your cart is empty</p>
             </div>
           ) : (
             cart.map((item) => (
@@ -532,7 +532,7 @@ export function POS() {
                       >
                         <div className="text-white scale-50">{item.vehicleType.icon}</div>
                       </div>
-                      <span className="text-xs text-gray-400">{item.vehicleType.name}</span>
+                      <span className="text-xs text-white/80">{item.vehicleType.name}</span>
                     </div>
                     {item.assignedStaff && (
                       <div className="flex items-center gap-1 mt-1">
@@ -540,7 +540,7 @@ export function POS() {
                         <span className="text-xs text-purple-400">{item.assignedStaff}</span>
                       </div>
                     )}
-                    <p className="text-sm text-gray-400 mt-1">₱{item.finalPrice} each</p>
+                    <p className="text-sm text-white/80 mt-1">₱{item.finalPrice} each</p>
                   </div>
                   <button
                     onClick={() => removeFromCart(item.id, item.vehicleType.id)}
@@ -577,7 +577,7 @@ export function POS() {
         {cart.length > 0 && (
           <div className="p-6 border-t border-white/10">
             <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-white/80">
                 <span>Subtotal</span>
                 <span>₱{subtotal.toFixed(2)}</span>
               </div>
@@ -590,7 +590,7 @@ export function POS() {
 
             <button
               onClick={() => setShowPaymentModal(true)}
-              className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl text-white font-semibold flex items-center justify-center gap-2"
+              className="w-full py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 rounded-xl text-white font-semibold flex items-center justify-center gap-2"
             >
               <Sparkles className="w-5 h-5" />
               <span>Complete Payment</span>
@@ -607,48 +607,145 @@ export function POS() {
             onClick={() => selectedCustomer && setShowCustomerModal(false)}
           >
             <div
-              className="w-full max-w-2xl backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8 max-h-[90vh] overflow-auto"
+              className="w-full max-w-2xl backdrop-blur-xl bg-slate-800/70 border border-white/20 rounded-3xl p-8 max-h-[90vh] overflow-auto"
               onClick={e => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-white">Select Customer</h3>
+
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <User className="w-7 h-7 text-white" />
+                  </div>
+
+                  <div>
+                    <h3 className="text-3xl font-bold text-white mb-1">
+                      Customer Selection
+                    </h3>
+
+                    <p className="text-white/60">
+                      Search or add a new customer
+                    </p>
+                  </div>
+
+                </div>
                 <button
                   onClick={() => setShowCustomerModal(false)}
-                  className="text-gray-400 hover:text-white"
+                  className="text-white/80 hover:text-white"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="mb-4 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div className="mb-6 relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50" />
+
                 <input
                   type="text"
-                  placeholder="Search customers..."
+                  placeholder="Search by name, phone, or plate number..."
                   value={customerSearchQuery}
-                  onChange={e => setCustomerSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
+                  onChange={(e) => setCustomerSearchQuery(e.target.value)}
+                  className="
+      w-full
+      pl-12
+      pr-4
+      py-4
+      bg-white/10
+      hover:bg-white/15
+      border
+      border-white/20
+      rounded-2xl
+      text-white
+      placeholder-white/40
+      backdrop-blur-xl
+      focus:outline-none
+      focus:bg-white/15
+      transition-all
+    "
                 />
               </div>
-              <div className="space-y-3 max-h-96 overflow-y-auto mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-semibold text-white">
+                  {customerSearchQuery ? 'Search Results' : 'Recent Customers'}
+                </h4>
+
+                <span className="text-sm text-white/40">
+                  {filteredCustomers.length} found
+                </span>
+              </div>
+
+              <div className="space-y-4 max-h-[340px] overflow-y-auto pr-2 mb-6 custom-scrollbar
+">
                 {filteredCustomers.map((customer) => (
                   <div
                     key={customer.id}
                     onClick={() => handleSelectCustomer(customer)}
-                    className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 cursor-pointer hover:bg-white/10"
+                    className="
+    group
+    relative
+    overflow-hidden
+    backdrop-blur-2xl
+    bg-white/10
+    hover:bg-white/15
+    border
+    border-white/20
+    rounded-[24px]
+    p-4
+    cursor-pointer
+    shadow-xl
+    shadow-black/10
+    transition-all
+    duration-300
+    hover:scale-[1.02]
+    hover:-translate-y-1
+  "
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                        <User className="w-5 h-5 text-white" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/5 group-hover:to-purple-500/5 transition-all duration-500" />
+
+                    <div className="relative flex items-center gap-4">
+
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <User className="w-6 h-6 text-white" />
                       </div>
-                      <div>
-                        <p className="text-white font-semibold">{customer.name}</p>
-                        <p className="text-sm text-gray-400">{customer.phone}</p>
+
+                      <div className="flex-1">
+                        <p className="text-white font-semibold text-lg">
+                          {customer.name}
+                        </p>
+
+                        <div className="flex items-center gap-3 text-sm text-white/50 mt-1">
+                          <span className="flex items-center gap-1">
+                            <Phone className="w-3 h-3" />
+                            {customer.phone}
+                          </span>
+
+                          {customer.plateNumber && (
+                            <span className="flex items-center gap-1">
+                              <Car className="w-3 h-3" />
+                              {customer.plateNumber}
+                            </span>
+                          )}
+                        </div>
                       </div>
+
+                      {customer.vehicleType && (
+                        <div className="
+        px-3
+        py-1.5
+        rounded-xl
+        bg-cyan-500/10
+        border
+        border-cyan-400/20
+        text-cyan-300
+        text-xs
+        font-medium
+      ">
+                          {customer.vehicleType}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
                 {filteredCustomers.length === 0 && customerSearchQuery && (
-                  <div className="text-center text-gray-400 py-4">No customers found</div>
+                  <div className="text-center text-white/80 py-4">No customers found</div>
                 )}
               </div>
               <button
@@ -667,14 +764,14 @@ export function POS() {
         {showAddCustomerForm && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <div
-              className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8"
+              className="w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl shadow-black/10 rounded-3xl p-8"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-white">Add New Customer</h3>
                 <button
                   onClick={() => setShowAddCustomerForm(false)}
-                  className="text-gray-400 hover:text-white"
+                  className="text-white/80 hover:text-white"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -685,35 +782,35 @@ export function POS() {
                   placeholder="Customer Name *"
                   value={newCustomer.name}
                   onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-white/10 hover:bg-white/15 border border-white/20 shadow-xl shadow-black/10 rounded-xl text-white placeholder-white/80 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
                 />
                 <input
                   type="tel"
                   placeholder="Phone Number *"
                   value={newCustomer.phone}
                   onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-white/10 hover:bg-white/15 border border-white/20 shadow-xl shadow-black/10 rounded-xl text-white placeholder-white/80 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
                 />
                 <input
                   type="text"
                   placeholder="Plate Number (Optional)"
                   value={newCustomer.plateNumber}
                   onChange={e => setNewCustomer({ ...newCustomer, plateNumber: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-white/10 hover:bg-white/15 border border-white/20 shadow-xl shadow-black/10 rounded-xl text-white placeholder-white/80 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
                 />
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Select Vehicle Type</label>
                   <select
                     value={newCustomer.vehicleType}
                     onChange={e => setNewCustomer({ ...newCustomer, vehicleType: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all cursor-pointer"
+                    className="w-full px-4 py-3 bg-white/10 hover:bg-white/15 border border-white/20 shadow-xl shadow-black/10 rounded-xl text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all cursor-pointer"
                   >
-                    <option value="" className="bg-slate-800 text-gray-300">Select Vehicle Type</option>
-                    <option value="Motorcycle" className="bg-slate-800 text-white">Motorcycle</option>
-                    <option value="Sedan" className="bg-slate-800 text-white">Sedan</option>
-                    <option value="SUV" className="bg-slate-800 text-white">SUV</option>
-                    <option value="Van" className="bg-slate-800 text-white">Van</option>
-                    <option value="Truck" className="bg-slate-800 text-white">Truck</option>
+                    <option value="" className="bg-slate-800/70 text-gray-300">Select Vehicle Type</option>
+                    <option value="Motorcycle" className="bg-slate-800/70 text-white">Motorcycle</option>
+                    <option value="Sedan" className="bg-slate-800/70 text-white">Sedan</option>
+                    <option value="SUV" className="bg-slate-800/70 text-white">SUV</option>
+                    <option value="Van" className="bg-slate-800/70 text-white">Van</option>
+                    <option value="Truck" className="bg-slate-800/70 text-white">Truck</option>
                   </select>
                 </div>
               </div>
@@ -750,7 +847,7 @@ export function POS() {
             }}
           >
             <div
-              className="w-full max-w-2xl max-h-[90vh] backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl shadow-2xl overflow-auto"
+              className="w-full max-w-2xl max-h-[90vh] backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl shadow-black/10 rounded-3xl shadow-2xl overflow-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="p-8">
@@ -793,11 +890,10 @@ export function POS() {
                       <div
                         key={vehicle.id}
                         onClick={() => handleVehicleSelect(vehicle)}
-                        className={`relative cursor-pointer backdrop-blur-xl border rounded-2xl p-6 transition-all ${
-                          selectedVehicle?.id === vehicle.id
-                            ? `border-blue-500/50 bg-blue-500/10`
-                            : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
-                        }`}
+                        className={`relative cursor-pointer backdrop-blur-xl border rounded-2xl p-6 transition-all ${selectedVehicle?.id === vehicle.id
+                          ? `border-blue-500/50 bg-blue-500/10`
+                          : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                          }`}
                       >
                         {selectedVehicle?.id === vehicle.id && (
                           <div className="absolute top-3 right-3 w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
@@ -829,11 +925,10 @@ export function POS() {
                         <button
                           key={staff}
                           onClick={() => setSelectedStaff(staff)}
-                          className={`relative cursor-pointer backdrop-blur-xl bg-white/5 border rounded-xl p-4 transition-all ${
-                            selectedStaff === staff
-                              ? 'border-purple-500/50 bg-purple-500/10'
-                              : 'border-white/10 hover:border-white/20'
-                          }`}
+                          className={`relative cursor-pointer backdrop-blur-xl bg-white/5 border rounded-xl p-4 transition-all ${selectedStaff === staff
+                            ? 'border-purple-500/50 bg-purple-500/10'
+                            : 'border-white/10 hover:border-white/20'
+                            }`}
                         >
                           {selectedStaff === staff && (
                             <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
@@ -841,16 +936,14 @@ export function POS() {
                             </div>
                           )}
                           <div className="relative flex flex-col items-center text-center">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
-                              selectedStaff === staff
-                                ? 'bg-gradient-to-br from-purple-500 to-pink-500'
-                                : 'bg-gradient-to-br from-blue-500 to-cyan-500'
-                            }`}>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${selectedStaff === staff
+                              ? 'bg-gradient-to-br from-purple-500 to-pink-500'
+                              : 'bg-gradient-to-br from-blue-500 to-cyan-500'
+                              }`}>
                               <User className="w-5 h-5 text-white" />
                             </div>
-                            <span className={`text-sm font-medium ${
-                              selectedStaff === staff ? 'text-white' : 'text-gray-400'
-                            }`}>
+                            <span className={`text-sm font-medium ${selectedStaff === staff ? 'text-white' : 'text-gray-400'
+                              }`}>
                               {staff}
                             </span>
                           </div>
@@ -900,11 +993,10 @@ export function POS() {
                   <button
                     onClick={handleAddToCart}
                     disabled={!selectedVehicle || !selectedStaff}
-                    className={`flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
-                      (selectedVehicle && selectedStaff)
-                        ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50'
-                        : 'bg-white/5 text-gray-600 cursor-not-allowed'
-                    }`}
+                    className={`flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${(selectedVehicle && selectedStaff)
+                      ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50'
+                      : 'bg-white/5 text-gray-600 cursor-not-allowed'
+                      }`}
                   >
                     <ShoppingCart className="w-5 h-5" />
                     <span>Add to Cart</span>
@@ -916,130 +1008,312 @@ export function POS() {
         )}
       </AnimatePresence>
 
-      {/* Payment Modal */}
-      <AnimatePresence>
-        {showPaymentModal && (
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+{/* Payment Modal */}
+<AnimatePresence>
+  {showPaymentModal && (
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+      onClick={() => setShowPaymentModal(false)}
+    >
+      <div
+        className="w-full max-w-xl backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl shadow-black/10 rounded-[28px] p-6"
+        onClick={e => e.stopPropagation()}
+      >
+
+        {/* HEADER */}
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-4">
+
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+              <CreditCard className="w-6 h-6 text-white" />
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-white">
+                Payment
+              </h3>
+
+              <p className="text-white/50 mt-1 text-sm">
+                Select payment method and amount
+              </p>
+            </div>
+          </div>
+
+          <button
             onClick={() => setShowPaymentModal(false)}
+            className="text-white/50 hover:text-white transition-all"
           >
-            <div
-              className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8"
-              onClick={e => e.stopPropagation()}
-            >
-              <h3 className="text-2xl font-bold text-white mb-4">Payment</h3>
-              
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                {(['cash', 'card', 'ewallet'] as const).map((method) => (
-                  <div
-                    key={method}
-                    onClick={() => handlePaymentMethodSelect(method)}
-                    className={`cursor-pointer rounded-xl p-4 text-center border transition-all ${
-                      paymentMethod === method
-                        ? 'border-blue-500 bg-blue-500/20 ring-2 ring-blue-500/50'
-                        : 'border-white/10 bg-white/5 hover:bg-white/10'
-                    }`}
-                  >
-                    {method === 'cash' && <Banknote className="w-8 h-8 mx-auto text-white" />}
-                    {method === 'card' && <CreditCard className="w-8 h-8 mx-auto text-white" />}
-                    {method === 'ewallet' && <Wallet className="w-8 h-8 mx-auto text-white" />}
-                    <div className="text-white mt-2 capitalize">{method}</div>
-                  </div>
-                ))}
-              </div>
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-              <div className="bg-white/5 rounded-xl p-4 mb-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Total Amount</span>
-                  <span className="text-2xl font-bold text-white">₱{total.toFixed(2)}</span>
-                </div>
-              </div>
+        {/* PAYMENT METHODS */}
+        <div className="mb-6">
+          <h4 className="text-lg font-semibold text-white mb-4">
+            Payment Method
+          </h4>
 
-              {paymentMethod === 'cash' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Amount Received</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      placeholder="Enter amount received"
-                      value={amountReceived}
-                      onChange={(e) => setAmountReceived(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
-                    />
-                  </div>
-                  
-                  {amountReceived && parseFloat(amountReceived) > 0 && (
-                    <div className={`p-4 rounded-xl transition-all ${
-                      parseFloat(amountReceived) >= total
-                        ? 'bg-green-500/10 border border-green-500/30'
-                        : 'bg-red-500/10 border border-red-500/30'
-                    }`}>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Change:</span>
-                        <span className={`text-2xl font-bold ${
-                          parseFloat(amountReceived) >= total ? 'text-green-400' : 'text-red-400'
-                        }`}>
-                          ₱{changeAmount.toFixed(2)}
-                        </span>
-                      </div>
-                      {parseFloat(amountReceived) < total && (
-                        <p className="text-red-400 text-sm mt-2">
-                          Insufficient amount. Need ₱{(total - parseFloat(amountReceived)).toFixed(2)} more.
-                        </p>
-                      )}
-                    </div>
+          <div className="grid grid-cols-3 gap-3">
+
+            {(['cash', 'card', 'ewallet'] as const).map((method) => (
+              <div
+                key={method}
+                onClick={() => handlePaymentMethodSelect(method)}
+className={`cursor-pointer rounded-2xl p-4 text-center border transition-all duration-300 backdrop-blur-xl ${paymentMethod === method ? 'border-cyan-400/50 bg-white/10 scale-[1.02]' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}
+              >
+
+<div
+  className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-3 ${
+    method === 'cash'
+      ? 'bg-gradient-to-br from-green-500 to-emerald-500'
+      : method === 'card'
+      ? 'bg-gradient-to-br from-blue-500 to-purple-500'
+      : 'bg-gradient-to-br from-pink-500 to-rose-500'
+  }`}
+>
+
+                  {method === 'cash' && (
+                    <Banknote className="w-6 h-6 text-white" />
+                  )}
+
+                  {method === 'card' && (
+                    <CreditCard className="w-6 h-6 text-white" />
+                  )}
+
+                  {method === 'ewallet' && (
+                    <Wallet className="w-6 h-6 text-white" />
                   )}
                 </div>
-              )}
 
-              {paymentMethod && paymentMethod !== 'cash' && (
-                <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl mb-4">
-                  <div className="flex items-center gap-3">
-                    <CreditCard className="w-5 h-5 text-blue-400" />
-                    <div>
-                      <p className="text-white font-semibold">Payment via {paymentMethod === 'card' ? 'Credit/Debit Card' : 'E-Wallet'}</p>
-                      <p className="text-sm text-gray-400">Amount to charge: ₱{total.toFixed(2)}</p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="text-white font-semibold text-base capitalize">
+                    {method}
+                  </p>
+
+                  <p className="text-white/40 text-xs mt-1">
+                    {method === 'cash' && 'Pay with cash'}
+                    {method === 'card' && 'Debit/Credit'}
+                    {method === 'ewallet' && 'GCash / Maya'}
+                  </p>
                 </div>
-              )}
 
-              <button
-                onClick={handleConfirmPayment}
-                disabled={
-                  !paymentMethod ||
-                  (paymentMethod === 'cash' &&
-                    (!amountReceived || parseFloat(amountReceived) < total))
-                }
-                className={`w-full py-3 rounded-xl text-white font-semibold transition-all flex items-center justify-center gap-2 ${
-                  paymentMethod && (paymentMethod !== 'cash' || (amountReceived && parseFloat(amountReceived) >= total))
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/50'
-                    : 'bg-white/5 text-gray-600 cursor-not-allowed'
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ORDER SUMMARY */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
+
+          <h4 className="text-xl font-bold text-white mb-4">
+            Order Summary
+          </h4>
+
+          <div className="space-y-2 mb-4">
+
+            {cart.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between"
+              >
+                <div>
+                  <p className="text-white font-medium text-sm">
+                    {item.name}
+
+                    <span className="text-white/40 ml-2">
+                      ({item.vehicleType.name})
+                    </span>
+                  </p>
+
+                  <p className="text-xs text-white/40">
+                    x{item.quantity}
+                  </p>
+                </div>
+
+                <p className="text-white font-semibold text-sm">
+                  ₱{(item.finalPrice * item.quantity).toFixed(2)}
+                </p>
+              </div>
+            ))}
+
+          </div>
+
+          <div className="border-t border-white/10 pt-4 space-y-2">
+
+            <div className="flex justify-between text-white/50 text-sm">
+              <span>Subtotal</span>
+              <span>₱{subtotal.toFixed(2)}</span>
+            </div>
+
+            <div className="flex justify-between text-white/50 text-sm">
+              <span>Tax</span>
+              <span>₱0.00</span>
+            </div>
+
+            <div className="flex justify-between items-center pt-2">
+              <span className="text-xl font-bold text-white">
+                Total
+              </span>
+
+              <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                ₱{total.toFixed(2)}
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        {/* CASH INPUT */}
+        {paymentMethod === 'cash' && (
+          <div className="space-y-4 mb-6">
+
+            <div>
+              <label className="block text-sm font-medium text-white/60 mb-2">
+                Amount Received
+              </label>
+
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Enter amount received"
+                value={amountReceived}
+                onChange={(e) => setAmountReceived(e.target.value)}
+                className="
+                  w-full
+                  px-4
+                  py-3
+                  bg-white/5
+                  border
+                  border-white/10
+                  rounded-2xl
+                  text-white
+                  placeholder-white/30
+                  focus:outline-none
+                  focus:border-cyan-400/50
+                  transition-all
+                "
+              />
+            </div>
+
+            {amountReceived && parseFloat(amountReceived) > 0 && (
+              <div
+                className={`p-4 rounded-2xl transition-all ${
+                  parseFloat(amountReceived) >= total
+                    ? 'bg-green-500/10 border border-green-500/30'
+                    : 'bg-red-500/10 border border-red-500/30'
                 }`}
               >
-                {paymentStatus === 'processing' ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Processing...</span>
-                  </>
-                ) : (
-                  <>
-                    <Check className="w-5 h-5" />
-                    <span>Confirm Payment</span>
-                  </>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60 text-sm">
+                    Change:
+                  </span>
+
+                  <span
+                    className={`text-2xl font-bold ${
+                      parseFloat(amountReceived) >= total
+                        ? 'text-green-400'
+                        : 'text-red-400'
+                    }`}
+                  >
+                    ₱{changeAmount.toFixed(2)}
+                  </span>
+                </div>
+
+                {parseFloat(amountReceived) < total && (
+                  <p className="text-red-400 text-xs mt-2">
+                    Need ₱
+                    {(total - parseFloat(amountReceived)).toFixed(2)} more
+                  </p>
                 )}
-              </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* NON CASH INFO */}
+        {paymentMethod && paymentMethod !== 'cash' && (
+          <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl mb-6">
+            <div className="flex items-center gap-3">
+              <CreditCard className="w-5 h-5 text-blue-400" />
+
+              <div>
+                <p className="text-white font-medium text-sm">
+                  Payment via {paymentMethod === 'card'
+                    ? 'Credit/Debit Card'
+                    : 'E-Wallet'}
+                </p>
+
+                <p className="text-xs text-white/50">
+                  Amount to charge: ₱{total.toFixed(2)}
+                </p>
+              </div>
             </div>
           </div>
         )}
-      </AnimatePresence>
+
+        {/* ACTION BUTTONS */}
+        <div className="flex gap-3">
+
+          <button
+            onClick={() => setShowPaymentModal(false)}
+            className="
+              flex-1
+              py-3
+              rounded-2xl
+              bg-white/5
+              border
+              border-white/10
+              text-white/70
+              hover:bg-white/10
+              transition-all
+              font-semibold
+            "
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={handleConfirmPayment}
+            disabled={
+              !paymentMethod ||
+              (paymentMethod === 'cash' &&
+                (!amountReceived ||
+                  parseFloat(amountReceived) < total))
+            }
+className={`flex-1 py-3 rounded-2xl text-white font-semibold transition-all flex items-center justify-center gap-2 ${
+  paymentMethod &&
+  (paymentMethod !== 'cash' ||
+    (amountReceived &&
+      parseFloat(amountReceived) >= total))
+    ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:shadow-lg hover:shadow-cyan-500/40'
+    : 'bg-white/5 text-white/30 cursor-not-allowed'
+}`}
+          >
+
+            {paymentStatus === 'processing' ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Processing...</span>
+              </>
+            ) : (
+              <>
+                <Check className="w-5 h-5" />
+                <span>Confirm Payment</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</AnimatePresence>
 
       {/* Receipt Modal */}
       <AnimatePresence>
         {showReceipt && completedTransaction && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8">
+            <div className="w-full max-w-md backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl shadow-black/10 rounded-3xl p-8">
               <div className="text-center mb-4">
                 <div className="w-16 h-16 mx-auto rounded-full bg-green-500/20 flex items-center justify-center mb-3">
                   <CheckCircle2 className="w-8 h-8 text-green-400" />

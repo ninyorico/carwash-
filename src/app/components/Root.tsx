@@ -35,7 +35,7 @@ export function Root() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-950 to-blue-900 flex">
       {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -84,7 +84,7 @@ export function Root() {
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 CarWash Pro
               </h1>
-              <p className="text-xs text-gray-500">Management System</p>
+              <p className="text-xs text-white/90">Management System</p>
             </div>
           </div>
         </div>
@@ -117,14 +117,14 @@ export function Root() {
                     className={`w-5 h-5 relative z-10 transition-colors ${
                       isActive
                         ? 'text-blue-400'
-                        : 'text-gray-400 group-hover:text-white'
+                        : 'text-white/80 group-hover:text-white'
                     }`}
                   />
                   <span
                     className={`relative z-10 font-medium transition-colors ${
                       isActive
                         ? 'text-white'
-                        : 'text-gray-400 group-hover:text-white'
+                        : 'text-white/80 group-hover:text-white'
                     }`}
                   >
                     {item.label}
@@ -146,20 +146,20 @@ export function Root() {
 
         {/* User section */}
         <div className="p-4 border-t border-white/10">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 mb-2">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 mb-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
               JD
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-white">John Doe</p>
-              <p className="text-xs text-gray-500">Admin</p>
+              <p className="text-xs text-white/80">Admin</p>
             </div>
           </div>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+            className="w-full flex items-center gap-2 px-4 py-2 rounded-xl text-white/80 hover:text-white hover:bg-white/5 transition-all"
           >
             <LogOut className="w-4 h-4" />
             <span className="text-sm">Logout</span>

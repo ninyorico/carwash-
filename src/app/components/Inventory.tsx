@@ -169,14 +169,14 @@ export function Inventory() {
       >
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Inventory Management</h1>
-          <p className="text-gray-400">Track supplies, stock levels, and reorder points</p>
+          <p className="text-white/80">Track supplies, stock levels, and reorder points</p>
         </div>
         <div className="flex gap-3">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={fetchInventory}
-            className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all flex items-center gap-2"
+            className="px-4 py-3 bg-white/10 hover:bg-white/15 border border-white/20 rounded-2xl shadow-lg shadow-black/5 text-white hover:bg-white/10 transition-all flex items-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />
             <span>Refresh</span>
@@ -185,7 +185,7 @@ export function Inventory() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowAddModal(true)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
             <span>Add Item</span>
@@ -199,14 +199,14 @@ export function Inventory() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+          className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 p-6"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Total Items</p>
+              <p className="text-white/80 text-sm mb-1">Total Items</p>
               <p className="text-3xl font-bold text-white">{stats.total}</p>
             </div>
-            <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30">
+            <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/30">
               <Package className="w-6 h-6 text-blue-400" />
             </div>
           </div>
@@ -216,14 +216,14 @@ export function Inventory() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+          className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 p-6"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Low Stock</p>
+              <p className="text-white/80 text-sm mb-1">Low Stock</p>
               <p className="text-3xl font-bold text-yellow-400">{stats.lowStock}</p>
             </div>
-            <div className="p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+            <div className="p-3 rounded-2xl bg-yellow-500/10 border border-yellow-500/30">
               <TrendingDown className="w-6 h-6 text-yellow-400" />
             </div>
           </div>
@@ -233,14 +233,14 @@ export function Inventory() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+          className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 p-6"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Out of Stock</p>
+              <p className="text-white/80 text-sm mb-1">Out of Stock</p>
               <p className="text-3xl font-bold text-red-400">{stats.outOfStock}</p>
             </div>
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30">
+            <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/30">
               <AlertCircle className="w-6 h-6 text-red-400" />
             </div>
           </div>
@@ -250,14 +250,14 @@ export function Inventory() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+          className="backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 p-6"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Inventory Value</p>
+              <p className="text-white/80 text-sm mb-1">Inventory Value</p>
               <p className="text-3xl font-bold text-green-400">₱{stats.totalValue.toLocaleString()}</p>
             </div>
-            <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30">
+            <div className="p-3 rounded-2xl bg-green-500/10 border border-green-500/30">
               <Package className="w-6 h-6 text-green-400" />
             </div>
           </div>
@@ -269,13 +269,13 @@ export function Inventory() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center justify-between"
+          className="mb-6 p-4 bg-yellow-500/10 border border-yellow-400/20 backdrop-blur-xl rounded-2xl flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-yellow-400" />
             <div>
               <p className="text-yellow-400 font-semibold">Low Stock Alert</p>
-              <p className="text-sm text-gray-400">{stats.lowStock} item(s) are running low. Please reorder soon.</p>
+              <p className="text-sm text-white/80">{stats.lowStock} item(s) are running low. Please reorder soon.</p>
             </div>
           </div>
           <button className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-lg text-yellow-400 text-sm hover:bg-yellow-500/30 transition-all">
@@ -292,13 +292,13 @@ export function Inventory() {
         className="mb-6"
       >
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/80 pointer-events-none z-10" />
           <input
             type="text"
             placeholder="Search by name, category, or supplier..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+            className="w-full pl-12 pr-4 py-4 bg-white/5 hover:bg-white/15 border border-white/20 rounded-2xl text-white placeholder-white/40 backdrop-blur-xl focus:outline-none focus:bg-white/15 transition-all"
           />
         </div>
       </motion.div>
@@ -317,7 +317,7 @@ export function Inventory() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 group overflow-hidden"
+              className="relative backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] shadow-xl shadow-black/10 transition-all duration-300 p-6 group overflow-hidden"
             >
               {/* Status badge */}
               <div className="absolute top-4 right-4">
@@ -331,7 +331,7 @@ export function Inventory() {
 
               {/* Icon */}
               <div className="mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-white">
                   <Package className="w-6 h-6" />
                 </div>
               </div>
@@ -339,7 +339,7 @@ export function Inventory() {
               {/* Content */}
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-white mb-1">{item.name}</h3>
-                <p className="text-sm text-gray-400 mb-3">{item.category}</p>
+                <p className="text-sm text-white/60 mb-3">{item.category}</p>
                 
                 {/* Stock level */}
                 <div className="space-y-2">
@@ -349,7 +349,7 @@ export function Inventory() {
                       {item.quantity} {item.unit}
                     </span>
                   </div>
-                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min(stockPercentage, 100)}%` }}
@@ -369,27 +369,27 @@ export function Inventory() {
               {/* Details */}
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Reorder Point:</span>
-                  <span className="text-gray-400">{item.minStock} {item.unit}</span>
+                  <span className="text-white/60">Reorder Point:</span>
+                  <span className="text-white/60">{item.minStock} {item.unit}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Unit Price:</span>
-                  <span className="text-gray-400">₱{item.price.toLocaleString()}</span>
+                  <span className="text-white/60">Unit Price:</span>
+                  <span className="text-white/60">₱{item.price.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Supplier:</span>
-                  <span className="text-gray-400">{item.supplier}</span>
+                  <span className="text-white/60">Supplier:</span>
+                  <span className="text-white/60">{item.supplier}</span>
                 </div>
               </div>
 
               {/* Last restocked */}
               <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-white/60">
                   Last restocked: <span className="text-gray-400">{new Date(item.lastRestocked).toLocaleDateString()}</span>
                 </p>
                 <button
                   onClick={() => handleRestock(item)}
-                  className="px-3 py-1 bg-blue-500/10 border border-blue-500/30 rounded-lg text-blue-400 text-xs hover:bg-blue-500/20 transition-all"
+                  className="px-3 py-1 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-cyan-300 hover:bg-cyan-500/20 text-xs hover:bg-blue-500/20 transition-all"
                 >
                   Restock
                 </button>
@@ -428,7 +428,7 @@ export function Inventory() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8 shadow-2xl"
+              className="w-full max-w-lg backdrop-blur-xl bg-slate-800/70 border border-white/20 rounded-3xl p-8 shadow-2xl"
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
@@ -451,7 +451,7 @@ export function Inventory() {
                     placeholder="e.g., Foam Soap, Microfiber Towels"
                     value={newItem.name}
                     onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                   />
                 </div>
 
@@ -462,7 +462,7 @@ export function Inventory() {
                     placeholder="e.g., Cleaning Supplies, Tools, Chemicals"
                     value={newItem.category}
                     onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                   />
                 </div>
 
@@ -474,7 +474,7 @@ export function Inventory() {
                       placeholder="0"
                       value={newItem.quantity}
                       onChange={(e) => setNewItem({ ...newItem, quantity: parseFloat(e.target.value) })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                     />
                   </div>
                   <div>
@@ -484,7 +484,7 @@ export function Inventory() {
                       placeholder="e.g., liters, pieces, kg"
                       value={newItem.unit}
                       onChange={(e) => setNewItem({ ...newItem, unit: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                     />
                   </div>
                 </div>
@@ -496,7 +496,7 @@ export function Inventory() {
                     placeholder="Minimum stock level before reorder"
                     value={newItem.minStock}
                     onChange={(e) => setNewItem({ ...newItem, minStock: parseFloat(e.target.value) })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                   />
                 </div>
 
@@ -508,7 +508,7 @@ export function Inventory() {
                       placeholder="0.00"
                       value={newItem.price}
                       onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                     />
                   </div>
                   <div>
@@ -518,7 +518,7 @@ export function Inventory() {
                       placeholder="Supplier name"
                       value={newItem.supplier}
                       onChange={(e) => setNewItem({ ...newItem, supplier: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
                     />
                   </div>
                 </div>
@@ -527,14 +527,14 @@ export function Inventory() {
               <div className="flex gap-3 mt-8">
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-semibold hover:bg-white/10 transition-all"
+                  className="flex-1 py-3 bg-white/10 border border-white/10 rounded-2xl text-white font-semibold hover:bg-white/10 transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddItem}
                   disabled={!newItem.name || !newItem.category || newItem.quantity <= 0}
-                  className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl text-white font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-5 h-5" />
                   <span>Add Item</span>

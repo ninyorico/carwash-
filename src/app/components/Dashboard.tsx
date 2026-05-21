@@ -42,7 +42,7 @@ function StatCard({ title, value, change, icon, gradient, delay }: any) {
   }, [targetValue]);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.5 }} whileHover={{ scale: 1.02, y: -4 }} className="relative overflow-hidden backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 group cursor-pointer">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.5 }} whileHover={{ scale: 1.02, y: -4 }} className="relative overflow-hidden backdrop-blur-2xl bg-white/10 hover:bg-white/15 border border-white/20 rounded-[28px] p-6 shadow-xl shadow-black/10 transition-all duration-300 group cursor-pointer">
       <div className={`absolute inset-0 ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
       <div className="flex items-start justify-between mb-4">
         <div className={`p-3 rounded-xl ${gradient} bg-opacity-10 border border-white/10`}>{icon}</div>
@@ -51,7 +51,7 @@ function StatCard({ title, value, change, icon, gradient, delay }: any) {
           <span>{Math.abs(Math.round(change))}%</span>
         </div>
       </div>
-      <div><p className="text-gray-400 text-sm mb-1">{title}</p><p className="text-3xl font-bold text-white">{title.includes('Revenue') ? '₱' : ''}{Math.floor(count).toLocaleString()}</p></div>
+      <div><p className="text-white/80 text-sm mb-1">{title}</p><p className="text-3xl font-bold text-white">{title.includes('Revenue') ? '₱' : ''}{Math.floor(count).toLocaleString()}</p></div>
     </motion.div>
   );
 }
@@ -61,9 +61,9 @@ const CustomTooltip = ({ active, payload, label, currency = false }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-lg">
-        <p className="text-gray-600 text-sm font-medium mb-1">{label}</p>
+        <p className="text-white/80 text-sm font-medium mb-1">{label}</p>
         {payload.map((p: any, idx: number) => (
-          <p key={idx} className="text-gray-800 text-sm">
+          <p key={idx} className="text-white/80 text-sm">
             <span style={{ color: p.color }} className="font-medium">
               {p.name}:
             </span>{' '}
@@ -112,7 +112,7 @@ export function Dashboard() {
   return (
     <div className="p-8 space-y-6">
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
-        <div><h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1><p className="text-gray-400">Welcome back! Here's your overview</p></div>
+        <div><h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1><p className="text-white/80">Welcome back! Here's your overview</p></div>
 
       </motion.div>
 
@@ -126,7 +126,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart with Gradient */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6"><div><h3 className="text-lg font-semibold text-white mb-1">Weekly Revenue</h3><p className="text-sm text-gray-400">Last 7 days performance</p></div></div>
+          <div className="flex items-center justify-between mb-6"><div><h3 className="text-lg font-semibold text-white mb-1">Weekly Revenue</h3><p className="text-sm text-white/80">Last 7 days performance</p></div></div>
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={revenueData}>
               <defs>
@@ -140,8 +140,8 @@ export function Dashboard() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
-              <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
-              <YAxis stroke="#9ca3af" fontSize={12} />
+              <XAxis dataKey="name" stroke="rgba(255,255,255,0.8)" fontSize={12} />
+              <YAxis stroke="rgba(255,255,255,0.8)" fontSize={12} />
               <Tooltip content={<CustomTooltip currency={true}  />} />
               <Line 
                 type="monotone" 
@@ -158,7 +158,7 @@ export function Dashboard() {
 
         {/* Service Distribution Chart with Gradient */}
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6"><div><h3 className="text-lg font-semibold text-white mb-1">Service Distribution</h3><p className="text-sm text-gray-400">By service type</p></div></div>
+          <div className="flex items-center justify-between mb-6"><div><h3 className="text-lg font-semibold text-white mb-1">Service Distribution</h3><p className="text-sm text-white/80">By service type</p></div></div>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={serviceData}>
               <defs>
@@ -168,8 +168,8 @@ export function Dashboard() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
-              <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} angle={-45} textAnchor="end" height={80} />
-              <YAxis stroke="#9ca3af" fontSize={12} />
+              <XAxis dataKey="name" stroke="rgba(255,255,255,0.8)" fontSize={12} angle={-45} textAnchor="end" height={80} />
+              <YAxis stroke="rgba(255,255,255,0.8)" fontSize={12} />
               <Tooltip content={<CustomTooltip currency={false} />} />
               <Bar dataKey="value" fill="url(#barGradient)" radius={[8, 8, 0, 0]} />
             </BarChart>
@@ -211,7 +211,7 @@ export function Dashboard() {
             {serviceData.map((item: any, idx: number) => (
               <div key={item.name} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-sm text-gray-400">{item.name}</span>
+                <span className="text-sm text-white/80">{item.name}</span>
               </div>
             ))}
           </div>
@@ -219,11 +219,11 @@ export function Dashboard() {
 
         {/* Recent Activity */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="lg:col-span-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6"><h3 className="text-lg font-semibold text-white">Recent Activity</h3><AlertCircle className="w-5 h-5 text-gray-400" /></div>
+          <div className="flex items-center justify-between mb-6"><h3 className="text-lg font-semibold text-white">Recent Activity</h3><AlertCircle className="w-5 h-5 text-white/80" /></div>
           <div className="space-y-3">
             <div className="flex items-start gap-4 p-4 rounded-xl border bg-blue-500/5 border-blue-500/20">
               <div className="w-2 h-2 rounded-full mt-2 bg-blue-400" />
-              <div><p className="text-white text-sm">System ready – no recent alerts</p><p className="text-gray-500 text-xs mt-1">All systems operating normally</p></div>
+              <div><p className="text-white text-sm">System ready – no recent alerts</p><p className="text-white/80 text-xs mt-1">All systems operating normally</p></div>
             </div>
           </div>
         </motion.div>
