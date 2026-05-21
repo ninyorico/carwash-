@@ -1,2 +1,7 @@
+node_modules
+backend/node_modules
 .env
-/node_modules
+*.db
+dist
+carwash.db
+dev.db
