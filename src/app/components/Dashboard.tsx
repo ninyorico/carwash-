@@ -61,9 +61,9 @@ const CustomTooltip = ({ active, payload, label, currency = false }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-lg">
-        <p className="text-white/80 text-sm font-medium mb-1">{label}</p>
+        <p className="text-gray-700 text-sm font-medium mb-1">{label}</p>
         {payload.map((p: any, idx: number) => (
-          <p key={idx} className="text-white/80 text-sm">
+          <p key={idx} className="text-gray-700 text-sm">
             <span style={{ color: p.color }} className="font-medium">
               {p.name}:
             </span>{' '}
