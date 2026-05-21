@@ -390,5 +390,11 @@ app.get('/api/analytics/top-services', (req, res) => {
   }
 });
 
+
+app.delete('/api/reset-customers', (req, res) => {
+  db.prepare('DELETE FROM customers').run();
+  res.json({ success: true });
+});
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
