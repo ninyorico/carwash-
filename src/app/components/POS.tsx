@@ -167,7 +167,7 @@ const services: Service[] = [
   },
 ];
 
-const availableStaff = ['Mike Johnson', 'David Chen', 'Sarah Lee', 'Emily Rodriguez', 'James Wilson'];
+const availableStaff = ['Mike Johnson', 'David Chen', 'Sarah Lee', 'Emily Rodriguez'];
 
 let lastAssignedIndex = -1;
 const autoAssignStaff = () => {
