@@ -1,11 +1,32 @@
+# Carwash Management System
 
-  # Carwash Midterm (Copy)
+A modern carwash management system with an interactive dashboard, POS system, scheduling, analytics, inventory management, and transaction tracking.
 
-  This is a code bundle for Carwash Midterm (Copy). The original project is available at https://www.figma.com/design/4FeMTDzk3fnA2ae0vkE60j/Carwash-Midterm--Copy-.
+## Features
 
-  ## Running the code
+- Modern glassmorphism UI design
+- Point of Sale (POS) system
+- Customer management
+- Inventory management
+- Scheduling and staff assignment
+- Analytics and reports
+- Transaction history
+- Excel report generation
+- Responsive dashboard interface
 
-  Run `npm i` to install the dependencies.
+## Tech Stack
 
-  Run `npm run dev` to start the development server.
-  
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+- React Query
+- Recharts
+- Lucide React
+
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
