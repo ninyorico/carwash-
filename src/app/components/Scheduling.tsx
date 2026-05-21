@@ -122,7 +122,7 @@ function KanbanColumn({ column, bookings, onCardClick, newTicketIds }: any) {
           </div>
         </div>
       </div>
-      <div className="space-y-3 min-h-[400px]">
+      <div className="space-y-3 min-h-[400px] max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar">
         <AnimatePresence>
           {bookings.map((booking: Booking) => (
             <BookingCard
