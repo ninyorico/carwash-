@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from 'react-router';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard,
@@ -23,6 +23,16 @@ const navItems = [
 
 export function Root() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear any stored user data if needed
+    // localStorage.removeItem('user');
+    // sessionStorage.clear();
+    
+    // Navigate back to login page
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex">
@@ -148,6 +158,7 @@ export function Root() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={handleLogout}
             className="w-full flex items-center gap-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
           >
             <LogOut className="w-4 h-4" />

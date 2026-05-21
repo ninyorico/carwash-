@@ -41,6 +41,7 @@ interface Service {
   price: number;
   icon: React.ReactNode;
   gradient: string;
+  allowedVehicles?: string[];
 }
 
 interface VehicleType {
@@ -65,57 +66,6 @@ interface CartItem extends Service {
   finalPrice: number;
   assignedStaff?: string;
 }
-
-const services: Service[] = [
-  {
-    id: 'srv1',
-    name: 'Basic Wash',
-    description: 'Exterior wash and dry',
-    price: 250,
-    icon: <Droplets className="w-6 h-6" />,
-    gradient: 'from-blue-500 to-cyan-500',
-  },
-  {
-    id: 'srv2',
-    name: 'Premium Wash',
-    description: 'Wash + interior cleaning',
-    price: 450,
-    icon: <Sparkles className="w-6 h-6" />,
-    gradient: 'from-purple-500 to-pink-500',
-  },
-  {
-    id: 'srv3',
-    name: 'Full Detailing',
-    description: 'Complete detail service',
-    price: 1200,
-    icon: <Car className="w-6 h-6" />,
-    gradient: 'from-pink-500 to-rose-500',
-  },
-  {
-    id: 'srv4',
-    name: 'Express Wash',
-    description: 'Quick wash in 10 mins',
-    price: 150,
-    icon: <Zap className="w-6 h-6" />,
-    gradient: 'from-yellow-500 to-orange-500',
-  },
-  {
-    id: 'srv5',
-    name: 'Wax & Polish',
-    description: 'Premium wax application',
-    price: 600,
-    icon: <Shield className="w-6 h-6" />,
-    gradient: 'from-green-500 to-emerald-500',
-  },
-  {
-    id: 'srv6',
-    name: 'Air Fresh',
-    description: 'Interior deodorizing',
-    price: 200,
-    icon: <Wind className="w-6 h-6" />,
-    gradient: 'from-cyan-500 to-blue-500',
-  },
-];
 
 const vehicleTypes: VehicleType[] = [
   {
@@ -152,6 +102,68 @@ const vehicleTypes: VehicleType[] = [
     icon: <Truck className="w-8 h-8" />,
     priceMultiplier: 1.7,
     gradient: 'from-orange-500 to-red-500',
+  },
+];
+
+// Find the cheapest vehicle type (lowest priceMultiplier)
+const cheapestVehicle = vehicleTypes.reduce((prev, current) => 
+  (prev.priceMultiplier < current.priceMultiplier) ? prev : current
+);
+
+const services: Service[] = [
+  {
+    id: 'srv1',
+    name: 'Basic Wash',
+    description: 'Exterior wash and dry',
+    price: Math.round(250 * cheapestVehicle.priceMultiplier), // ₱150 for motorcycle
+    icon: <Droplets className="w-6 h-6" />,
+    gradient: 'from-blue-500 to-cyan-500',
+    allowedVehicles: ['motorcycle', 'sedan', 'suv', 'van', 'truck'],
+  },
+  {
+    id: 'srv2',
+    name: 'Premium Wash',
+    description: 'Wash + interior cleaning',
+    price: Math.round(450 * cheapestVehicle.priceMultiplier), // ₱270 for motorcycle
+    icon: <Sparkles className="w-6 h-6" />,
+    gradient: 'from-purple-500 to-pink-500',
+    allowedVehicles: ['sedan', 'suv', 'van', 'truck'], // No motorcycle
+  },
+  {
+    id: 'srv3',
+    name: 'Full Detailing',
+    description: 'Complete detail service',
+    price: Math.round(1200 * cheapestVehicle.priceMultiplier), // ₱720 for motorcycle
+    icon: <Car className="w-6 h-6" />,
+    gradient: 'from-pink-500 to-rose-500',
+    allowedVehicles: ['motorcycle', 'sedan', 'suv', 'van', 'truck'],
+  },
+  {
+    id: 'srv4',
+    name: 'Express Wash',
+    description: 'Quick wash in 10 mins',
+    price: Math.round(150 * cheapestVehicle.priceMultiplier), // ₱90 for motorcycle
+    icon: <Zap className="w-6 h-6" />,
+    gradient: 'from-yellow-500 to-orange-500',
+    allowedVehicles: ['motorcycle', 'sedan', 'suv', 'van', 'truck'],
+  },
+  {
+    id: 'srv5',
+    name: 'Wax & Polish',
+    description: 'Premium wax application',
+    price: Math.round(600 * cheapestVehicle.priceMultiplier), // ₱360 for motorcycle
+    icon: <Shield className="w-6 h-6" />,
+    gradient: 'from-green-500 to-emerald-500',
+    allowedVehicles: ['motorcycle', 'sedan', 'suv', 'van', 'truck'],
+  },
+  {
+    id: 'srv6',
+    name: 'Air Fresh',
+    description: 'Interior deodorizing',
+    price: Math.round(200 * cheapestVehicle.priceMultiplier), // ₱120 for motorcycle
+    icon: <Wind className="w-6 h-6" />,
+    gradient: 'from-cyan-500 to-blue-500',
+    allowedVehicles: ['sedan', 'suv', 'van', 'truck'], // No motorcycle
   },
 ];
 
@@ -193,7 +205,6 @@ export function POS() {
   const [showReceipt, setShowReceipt] = useState(false);
   const [transactionId, setTransactionId] = useState('');
   const [createdTicketId, setCreatedTicketId] = useState('');
-  // Store transaction data for receipt
   const [completedTransaction, setCompletedTransaction] = useState<{
     id: string;
     total: number;
@@ -202,6 +213,17 @@ export function POS() {
     amountReceived: string;
     changeAmount: number;
   } | null>(null);
+
+  const getAvailableVehicles = () => {
+    if (!selectedService) return vehicleTypes;
+    const allowedIds = selectedService.allowedVehicles || [];
+    return vehicleTypes.filter(vehicle => allowedIds.includes(vehicle.id));
+  };
+
+  const getBasePrice = (service: Service) => {
+    // Return the actual starting price (cheapest vehicle)
+    return service.price;
+  };
 
   const handleServiceClick = (service: Service) => {
     if (!selectedCustomer) {
@@ -218,7 +240,7 @@ export function POS() {
 
   const handleAddToCart = () => {
     if (!selectedService || !selectedVehicle || !selectedStaff) return;
-    const finalPrice = Math.round(selectedService.price * selectedVehicle.priceMultiplier);
+    const finalPrice = Math.round(selectedService.price / cheapestVehicle.priceMultiplier * selectedVehicle.priceMultiplier);
     setCart((prev) => {
       const existing = prev.find(
         (item) =>
@@ -270,12 +292,11 @@ export function POS() {
     );
   };
 
-  // No tax - just subtotal
   const subtotal = cart.reduce((sum, item) => sum + item.finalPrice * item.quantity, 0);
   const tax = 0;
   const total = subtotal + tax;
   const calculatedPrice = selectedService && selectedVehicle
-    ? Math.round(selectedService.price * selectedVehicle.priceMultiplier)
+    ? Math.round(selectedService.price / cheapestVehicle.priceMultiplier * selectedVehicle.priceMultiplier)
     : 0;
   const changeAmount = paymentMethod === 'cash' && amountReceived
     ? Math.max(0, parseFloat(amountReceived) - total)
@@ -346,7 +367,6 @@ export function POS() {
       const res = await api.post('/transactions', payload);
       const data = res.data;
       
-      // Store all transaction data for receipt before clearing
       setCompletedTransaction({
         id: data.transaction.id,
         total: total,
@@ -439,7 +459,7 @@ export function POS() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <div
               key={service.id}
               onClick={() => handleServiceClick(service)}
@@ -461,7 +481,7 @@ export function POS() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-sm text-gray-500">Starting at</span>
-                    <span className="text-2xl font-bold text-white ml-2">₱{service.price}</span>
+                    <span className="text-2xl font-bold text-white ml-2">₱{getBasePrice(service)}</span>
                   </div>
                   <div
                     className={`w-8 h-8 rounded-lg bg-gradient-to-br ${service.gradient} flex items-center justify-center text-white`}
@@ -610,7 +630,7 @@ export function POS() {
                 />
               </div>
               <div className="space-y-3 max-h-96 overflow-y-auto mb-4">
-                {filteredCustomers.map((customer: Customer) => (
+                {filteredCustomers.map((customer) => (
                   <div
                     key={customer.id}
                     onClick={() => handleSelectCustomer(customer)}
@@ -769,7 +789,7 @@ export function POS() {
                 <div className="mb-6">
                   <h4 className="text-lg font-semibold text-white mb-4">Choose Vehicle Type</h4>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {vehicleTypes.map((vehicle) => (
+                    {getAvailableVehicles().map((vehicle) => (
                       <div
                         key={vehicle.id}
                         onClick={() => handleVehicleSelect(vehicle)}
@@ -845,7 +865,7 @@ export function POS() {
                     <div>
                       <p className="text-gray-400 text-sm mb-1">Final Price</p>
                       <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                        ₱{selectedVehicle ? calculatedPrice : selectedService.price}
+                        ₱{selectedVehicle ? calculatedPrice : getBasePrice(selectedService)}
                       </div>
                     </div>
                     {selectedVehicle && (
@@ -857,7 +877,7 @@ export function POS() {
                         </div>
                         {selectedVehicle.priceMultiplier !== 1.0 && (
                           <span className="text-xs text-gray-500">
-                            Base: ₱{selectedService.price} × {selectedVehicle.priceMultiplier}
+                            Base: ₱{getBasePrice(selectedService)} × {selectedVehicle.priceMultiplier}
                           </span>
                         )}
                       </div>
@@ -896,131 +916,126 @@ export function POS() {
         )}
       </AnimatePresence>
 
-{/* Payment Modal */}
-<AnimatePresence>
-  {showPaymentModal && (
-    <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
-      onClick={() => setShowPaymentModal(false)}
-    >
-      <div
-        className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8"
-        onClick={e => e.stopPropagation()}
-      >
-        <h3 className="text-2xl font-bold text-white mb-4">Payment</h3>
-        
-        {/* Payment Method Selection */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {(['cash', 'card', 'ewallet'] as const).map((method) => (
+      {/* Payment Modal */}
+      <AnimatePresence>
+        {showPaymentModal && (
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPaymentModal(false)}
+          >
             <div
-              key={method}
-              onClick={() => handlePaymentMethodSelect(method)}
-              className={`cursor-pointer rounded-xl p-4 text-center border transition-all ${
-                paymentMethod === method
-                  ? 'border-blue-500 bg-blue-500/20 ring-2 ring-blue-500/50'
-                  : 'border-white/10 bg-white/5 hover:bg-white/10'
-              }`}
+              className="w-full max-w-md backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-3xl p-8"
+              onClick={e => e.stopPropagation()}
             >
-              {method === 'cash' && <Banknote className="w-8 h-8 mx-auto text-white" />}
-              {method === 'card' && <CreditCard className="w-8 h-8 mx-auto text-white" />}
-              {method === 'ewallet' && <Wallet className="w-8 h-8 mx-auto text-white" />}
-              <div className="text-white mt-2 capitalize">{method}</div>
-            </div>
-          ))}
-        </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Payment</h3>
+              
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                {(['cash', 'card', 'ewallet'] as const).map((method) => (
+                  <div
+                    key={method}
+                    onClick={() => handlePaymentMethodSelect(method)}
+                    className={`cursor-pointer rounded-xl p-4 text-center border transition-all ${
+                      paymentMethod === method
+                        ? 'border-blue-500 bg-blue-500/20 ring-2 ring-blue-500/50'
+                        : 'border-white/10 bg-white/5 hover:bg-white/10'
+                    }`}
+                  >
+                    {method === 'cash' && <Banknote className="w-8 h-8 mx-auto text-white" />}
+                    {method === 'card' && <CreditCard className="w-8 h-8 mx-auto text-white" />}
+                    {method === 'ewallet' && <Wallet className="w-8 h-8 mx-auto text-white" />}
+                    <div className="text-white mt-2 capitalize">{method}</div>
+                  </div>
+                ))}
+              </div>
 
-        {/* Total Amount Display */}
-        <div className="bg-white/5 rounded-xl p-4 mb-6">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Total Amount</span>
-            <span className="text-2xl font-bold text-white">₱{total.toFixed(2)}</span>
-          </div>
-        </div>
-
-        {/* Cash Payment Input with Change Display */}
-        {paymentMethod === 'cash' && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Amount Received</label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="Enter amount received"
-                value={amountReceived}
-                onChange={(e) => setAmountReceived(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
-              />
-            </div>
-            
-            {/* Change Display */}
-            {amountReceived && parseFloat(amountReceived) > 0 && (
-              <div className={`p-4 rounded-xl transition-all ${
-                parseFloat(amountReceived) >= total
-                  ? 'bg-green-500/10 border border-green-500/30'
-                  : 'bg-red-500/10 border border-red-500/30'
-              }`}>
+              <div className="bg-white/5 rounded-xl p-4 mb-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-300">Change:</span>
-                  <span className={`text-2xl font-bold ${
-                    parseFloat(amountReceived) >= total ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    ₱{changeAmount.toFixed(2)}
-                  </span>
+                  <span className="text-gray-400">Total Amount</span>
+                  <span className="text-2xl font-bold text-white">₱{total.toFixed(2)}</span>
                 </div>
-                {parseFloat(amountReceived) < total && (
-                  <p className="text-red-400 text-sm mt-2">
-                    Insufficient amount. Need ₱{(total - parseFloat(amountReceived)).toFixed(2)} more.
-                  </p>
-                )}
               </div>
-            )}
-          </div>
-        )}
 
-        {/* Card/E-Wallet Payment Info */}
-        {paymentMethod && paymentMethod !== 'cash' && (
-          <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl mb-4">
-            <div className="flex items-center gap-3">
-              <CreditCard className="w-5 h-5 text-blue-400" />
-              <div>
-                <p className="text-white font-semibold">Payment via {paymentMethod === 'card' ? 'Credit/Debit Card' : 'E-Wallet'}</p>
-                <p className="text-sm text-gray-400">Amount to charge: ₱{total.toFixed(2)}</p>
-              </div>
+              {paymentMethod === 'cash' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Amount Received</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter amount received"
+                      value={amountReceived}
+                      onChange={(e) => setAmountReceived(e.target.value)}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                    />
+                  </div>
+                  
+                  {amountReceived && parseFloat(amountReceived) > 0 && (
+                    <div className={`p-4 rounded-xl transition-all ${
+                      parseFloat(amountReceived) >= total
+                        ? 'bg-green-500/10 border border-green-500/30'
+                        : 'bg-red-500/10 border border-red-500/30'
+                    }`}>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-300">Change:</span>
+                        <span className={`text-2xl font-bold ${
+                          parseFloat(amountReceived) >= total ? 'text-green-400' : 'text-red-400'
+                        }`}>
+                          ₱{changeAmount.toFixed(2)}
+                        </span>
+                      </div>
+                      {parseFloat(amountReceived) < total && (
+                        <p className="text-red-400 text-sm mt-2">
+                          Insufficient amount. Need ₱{(total - parseFloat(amountReceived)).toFixed(2)} more.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {paymentMethod && paymentMethod !== 'cash' && (
+                <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl mb-4">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-5 h-5 text-blue-400" />
+                    <div>
+                      <p className="text-white font-semibold">Payment via {paymentMethod === 'card' ? 'Credit/Debit Card' : 'E-Wallet'}</p>
+                      <p className="text-sm text-gray-400">Amount to charge: ₱{total.toFixed(2)}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handleConfirmPayment}
+                disabled={
+                  !paymentMethod ||
+                  (paymentMethod === 'cash' &&
+                    (!amountReceived || parseFloat(amountReceived) < total))
+                }
+                className={`w-full py-3 rounded-xl text-white font-semibold transition-all flex items-center justify-center gap-2 ${
+                  paymentMethod && (paymentMethod !== 'cash' || (amountReceived && parseFloat(amountReceived) >= total))
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/50'
+                    : 'bg-white/5 text-gray-600 cursor-not-allowed'
+                }`}
+              >
+                {paymentStatus === 'processing' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-5 h-5" />
+                    <span>Confirm Payment</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         )}
+      </AnimatePresence>
 
-        {/* Confirm Button */}
-        <button
-          onClick={handleConfirmPayment}
-          disabled={
-            !paymentMethod ||
-            (paymentMethod === 'cash' &&
-              (!amountReceived || parseFloat(amountReceived) < total))
-          }
-          className={`w-full py-3 rounded-xl text-white font-semibold transition-all flex items-center justify-center gap-2 ${
-            paymentMethod && (paymentMethod !== 'cash' || (amountReceived && parseFloat(amountReceived) >= total))
-              ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/50'
-              : 'bg-white/5 text-gray-600 cursor-not-allowed'
-          }`}
-        >
-          {paymentStatus === 'processing' ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Processing...</span>
-            </>
-          ) : (
-            <>
-              <Check className="w-5 h-5" />
-              <span>Confirm Payment</span>
-            </>
-          )}
-        </button>
-      </div>
-    </div>
-  )}
-</AnimatePresence>
-      {/* Receipt Modal - Using stored transaction data */}
+      {/* Receipt Modal */}
       <AnimatePresence>
         {showReceipt && completedTransaction && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
@@ -1033,7 +1048,6 @@ export function POS() {
                 <p className="text-gray-400 text-sm mt-1">Transaction #{completedTransaction.id}</p>
               </div>
 
-              {/* Order Summary */}
               <div className="bg-white/5 rounded-xl p-4 mb-4 max-h-60 overflow-auto">
                 <h4 className="text-sm font-semibold text-gray-400 mb-3">Order Summary</h4>
                 {completedTransaction.cart.map((item, idx) => (
