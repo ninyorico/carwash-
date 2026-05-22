@@ -393,4 +393,4 @@ app.get('/api/analytics/top-services', (req, res) => {
 
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Carwash Backend running on http://localhost:${PORT}`));

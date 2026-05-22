@@ -112,7 +112,7 @@ export function Dashboard() {
   return (
     <div className="p-8 space-y-6">
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
-        <div><h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1><p className="text-white/80">Welcome back! Here's your overview</p></div>
+        <div><h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1><p className="text-white/80">Welcome back! Monitor your carwash operations in real-time.</p></div>
 
       </motion.div>
 
