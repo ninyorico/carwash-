@@ -113,12 +113,58 @@ app.post('/api/inventory', (req, res) => {
 app.post('/api/inventory/:id/restock', (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
-  const item = db.prepare('SELECT * FROM inventory WHERE id = ?').get(id);
-  if (!item) return res.status(404).json({ error: 'Item not found' });
-  const newQuantity = item.quantity + quantity;
-  const stmt = db.prepare('UPDATE inventory SET quantity = ?, lastRestocked = ? WHERE id = ?');
-  stmt.run(newQuantity, new Date().toISOString(), id);
-  res.json({ success: true });
+
+  console.log('RESTOCK REQUEST:', id, quantity);
+
+  try {
+    const item = db.prepare(
+      'SELECT * FROM inventory WHERE id = ?'
+    ).get(id);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item not found',
+      });
+    }
+
+    const updatedQuantity =
+      Number(item.quantity) + Number(quantity);
+
+    console.log('OLD:', item.quantity);
+    console.log('NEW:', updatedQuantity);
+
+    db.prepare(`
+      UPDATE inventory
+      SET
+        quantity = ?,
+        lastRestocked = ?
+      WHERE id = ?
+    `).run(
+      updatedQuantity,
+      new Date().toISOString(),
+      id
+    );
+
+    const updatedItem = db.prepare(
+      'SELECT * FROM inventory WHERE id = ?'
+    ).get(id);
+
+    console.log('UPDATED ITEM:', updatedItem);
+
+    res.json({
+      success: true,
+      item: updatedItem,
+    });
+  } catch (error) {
+    console.error('RESTOCK ERROR:', error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Failed to restock item',
+      error: error.message,
+    });
+  }
 });
 
 app.get('/api/customers', (req, res) => {
